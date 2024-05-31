@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 const Register = () => {
@@ -74,6 +75,45 @@ const Register = () => {
         
     }
 
+    const sendVerificationMail = () => {
+        try {
+            console.log('sadf');
+            axios.post('http://3.37.242.189:8000/send-verification-email/', {email: email})
+                .then((res) => {
+                    console.log(res);
+                    alert('메일이 전송되었습니다.')
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('이메일을 다시 확인해주세요.');
+                });
+            
+        } catch (err) {
+            console.log(err);
+            alert('메일 주소를 다시 확인해주세요.');
+        }
+
+    }
+
+    const sendProfile = () => {
+        try {
+            axios.post('http://localhost:5000/signup/', 
+                {username: id, password1: pw, password2: pwCheck, email: email, verification_code: authNumer, nickname: nickname})
+                .then((res) => {
+                    console.log(res);
+                    alert('회원가입이 완료되었습니다.');
+                }).catch((err) => {
+                    console.log(err);
+                    alert('입력하신 내용을 다시 확인해주세요.');
+                });
+            
+        } catch (err) {
+            console.log(err);
+            alert('입력하신 정보를 다시 확인해주세요.');
+        }
+    }
+
+
     return (
         <>
             <div style={Wrapper}>
@@ -92,16 +132,17 @@ const Register = () => {
                     <div>이메일 입력</div>
                 </div>
                 <LoginInput value={email} placeHolder={''} offset={0} type="text" onChange={onChangeEmail}/>
+                
                 <div style={AuthWrapper}>
                     <LoginInput value={authNumer} placeHolder={'인증번호 입력'} offset={100} type="text" onChange={onChangeAuthNumber}/>
-                    <button style={AuthBtn}>인증</button>
+                    <button style={AuthBtn} onClick={sendVerificationMail}>전송</button>
                 </div>
 
                 <div style={TitleText}>
                     <div>닉네임 입력</div>
                 </div>
                 <LoginInput value={nickname} placeHolder={'알파벳, 숫자, 3글자 이상'} offset={0} type="text" onChange={onChangeNickname}/>
-                <LoginBtn value={"회원가입"} bgColor={'#f4adff'} marginTop={"50px"} />
+                <LoginBtn value={"회원가입"} bgColor={'#f4adff'} marginTop={"50px"} onClick={sendProfile}/>
             </div>
         </>
     );

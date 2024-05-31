@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoginInput = ({value, bgColor, marginTop}) => {
+const LoginInput = ({value, bgColor, marginTop, onClick}) => {
 
     const style = {
         width: '80%',
@@ -18,7 +18,7 @@ const LoginInput = ({value, bgColor, marginTop}) => {
 
     return (
         <>
-            <div style={style}>{value}</div>
+            <div style={style} onClick={onClick}>{value}</div>
         </>
     );
 }

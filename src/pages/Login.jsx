@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
 import { Link } from 'react-router-dom';
+import supabase from '../initSupabase';
 
 
 const Login = () => {
@@ -44,13 +45,31 @@ const Login = () => {
         justifyContent: 'center'
     }
 
+    const loginSubmit = async () => { 
+        console.log(id, pw);
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: id,
+                password: pw,
+            });
+            console.log(data);
+            if (error) {
+                console.log(error);
+                alert('아이디나 비밀번호를 확인하세요.');
+            }
+        } catch (err) {
+            console.log(err);
+            alert('아이디나 비밀번호를 확인하세요.');
+        }
+    }
+
     return (
         <>
             <div style={Wrapper}>
                 <div style={Logo}>아맞다</div>
                 <LoginInput value={id} placeHolder={'아이디를 입력해주세요'} offset={0} type="text" onChange={onChangeId}/>
                 <LoginInput value={pw} placeHolder={'비밀번호를 입력해주세요'} offset={0} type="password" onChange={onChangePw} />
-                <LoginBtn value={"로그인"} bgColor={'#f4adff'} marginTop={"50px"} />
+                <LoginBtn value={"로그인"} bgColor={'#f4adff'} marginTop={"50px"} onClick={loginSubmit} />
                 <div style={MiniTxt}>아직 회원이 아니시라면?</div>
                 <Link to={'/register'} style={Linkstyle}>
                     <LoginBtn value={"회원가입"} bgColor={'#bebebe'} marginTop={"0"} />
