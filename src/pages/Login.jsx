@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
 import { Link } from 'react-router-dom';
-import supabase from '../initSupabase';
-
+import axios from 'axios';
 
 const Login = () => {
     const [id, setId] = useState('');
@@ -48,15 +47,17 @@ const Login = () => {
     const loginSubmit = async () => { 
         console.log(id, pw);
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: id,
-                password: pw,
-            });
-            console.log(data);
-            if (error) {
-                console.log(error);
-                alert('아이디나 비밀번호를 확인하세요.');
-            }
+            axios.post('http://3.37.242.189:8000/auth/login/', {data: {username: id, password: pw}}, {withCredentials:true})
+                .then((res) => {
+                    console.log(res);
+                    alert('로그인되었습니다.');
+                    localStorage['user_id'] = res.data.userid;
+                    window.location.href = '/main'; 
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('입력하신 정보를 확인하세요.');
+                });
         } catch (err) {
             console.log(err);
             alert('아이디나 비밀번호를 확인하세요.');

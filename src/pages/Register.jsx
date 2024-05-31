@@ -78,7 +78,7 @@ const Register = () => {
     const sendVerificationMail = () => {
         try {
             console.log('sadf');
-            axios.post('http://3.37.242.189:8000/send-verification-email/', {email: email})
+            axios.post('http://3.37.242.189:8000/auth/send-verification-email/', {data: {email: email}})
                 .then((res) => {
                     console.log(res);
                     alert('메일이 전송되었습니다.')
@@ -97,8 +97,8 @@ const Register = () => {
 
     const sendProfile = () => {
         try {
-            axios.post('http://localhost:5000/signup/', 
-                {username: id, password1: pw, password2: pwCheck, email: email, verification_code: authNumer, nickname: nickname})
+            axios.post('http://3.37.242.189:8000/auth/signup/', 
+                {data:{username: id, password1: pw, password2: pwCheck, email: email, verification_code: authNumer}})
                 .then((res) => {
                     console.log(res);
                     alert('회원가입이 완료되었습니다.');

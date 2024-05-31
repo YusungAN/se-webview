@@ -127,7 +127,31 @@ const Find = () => {
     }
 
     const submitInfo = () => {
-
+        try {
+            let formData = new FormData();
+            formData.append('user_id', localStorage['user_id']);
+            formData.append('item', option);
+            formData.append('manufacturer', brand);
+            formData.append('color', color);
+            formData.append('location', lostLocation);
+            formData.append('time', lostTime);
+            formData.append('contents', etc);
+            formData.append('photo', photoFile);
+            formData.append('reward', 0);
+            
+            axios.post('http://3.37.242.189:8000/find/register/', formData, {withCredentials:true})
+                .then((res) => {
+                    console.log(res);
+                    alert('success.')
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('입력하신 정보를 확인하세요.');
+                });
+        } catch (err) {
+            console.log(err);
+            alert('아이디나 비밀번호를 확인하세요.');
+        }
     }
     return (
         <>
