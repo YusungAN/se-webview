@@ -45,7 +45,8 @@ const Register = () => {
         width: '100vw',
         maxWidth: '400px',
         height: '100vh',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        overflowY: 'auto'
     };
 
     const TitleText = {
@@ -106,11 +107,13 @@ const Register = () => {
                     console.log(err);
                     alert('입력하신 내용을 다시 확인해주세요.');
                 });
+
             
         } catch (err) {
             console.log(err);
             alert('입력하신 정보를 다시 확인해주세요.');
         }
+        
     }
 
 

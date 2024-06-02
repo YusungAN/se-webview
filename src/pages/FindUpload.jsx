@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CoinIcon from '../assets/coin.svg?react';
 import axios from 'axios';
 
 
 const Find = () => {
+
+    const navigate = useNavigate();
 
     const [pageIdx, setPageIdx] = useState(0);
     const [option, setOption] = useState('');
@@ -19,6 +21,7 @@ const Find = () => {
     let photoFile;
 
     const onChangeOption = (e) => {
+        console.log(e.target.value);
         setOption(e.target.value);
     };
 
@@ -139,10 +142,11 @@ const Find = () => {
             formData.append('photo', photoFile);
             formData.append('reward', 0);
             
-            axios.post('http://3.37.242.189:8000/find/register/', formData, {withCredentials:true})
+            axios.post('http://3.37.242.189:8000/report/lost/', formData, {withCredentials:true})
                 .then((res) => {
                     console.log(res);
-                    alert('success.')
+                    alert('success.');
+                    navigate('/main');
                 })
                 .catch((error) => {
                     console.log(error);

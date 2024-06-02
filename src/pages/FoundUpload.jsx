@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CoinIcon from '../assets/coin.svg?react';
 import axios from 'axios';
 
 
 const Found = () => {
-
+    const navigate = useNavigate();
     const [pageIdx, setPageIdx] = useState(0);
     const [option, setOption] = useState('');
     const [brand, setBrand] = useState('');
@@ -16,7 +16,7 @@ const Found = () => {
     const [lostTime, setLostTime] = useState('');
     const [etc, setEtc] = useState('');
     const [point, setPoint] = useState(0);
-    let photoFile;
+    let photoFile = null;
 
     const onChangeOption = (e) => {
         setOption(e.target.value);
@@ -127,7 +127,31 @@ const Found = () => {
     }
 
     const submitInfo = () => {
-
+        try {
+            let formData = new FormData();
+            formData.append('user_id', localStorage['user_id']);
+            formData.append('item', option);
+            formData.append('manufacturer', brand);
+            formData.append('color', color);
+            formData.append('location', lostLocation);
+            formData.append('time', lostTime);
+            formData.append('contents', etc);
+            formData.append('photo', photoFile);
+            
+            axios.post('http://3.37.242.189:8000/report/find/', formData, {withCredentials:true})
+                .then((res) => {
+                    console.log(res);
+                    alert('물건이 정상적으로 등록되었습니다.');
+                    navigate('/main');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('입력하신 정보를 확인하세요.');
+                });
+        } catch (err) {
+            console.log(err);
+            alert('입력하신 정보를 입력하세요.');
+        }
     }
     return (
         <>

@@ -48,13 +48,13 @@ const Main = () => {
                     <div style={BigText}>분실물 찾기</div>
                 </div>
             </Link>
-            <Link to={'upload'}>
+            <Link to={'/found'}>
                 <div style={Box2}>
                     <div style={SmallText}>물건을 주웠어요</div>
                     <div style={BigText}>분실물 등록</div>
                 </div>
             </Link>
-            <NavBar chosenIdx={0}></NavBar>
+            <NavBar chosenIdx={0} />
         </>
     );
 }

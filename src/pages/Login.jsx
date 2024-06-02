@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import LoginInput from '../components/LoginInput/LoginInput';
 import LoginBtn from '../components/LoginBtn';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
 
@@ -22,14 +23,15 @@ const Login = () => {
         flexDirection: 'column',
         alignItems: 'center',
         width: '100vw',
-        height: '100vh'
+        height: '100vh',
+        overflowY: 'auto'
     };
 
     const Logo = {
         fontSize: '2.3rem',
         fontWeight: 'bold',
         color: 'black',
-        marginTop: '200px',
+        marginTop: '150px',
         marginBottom: '150px'
     };
 
@@ -46,13 +48,25 @@ const Login = () => {
 
     const loginSubmit = async () => { 
         console.log(id, pw);
+
+        try {
+            const {data: data} = await axios.post('https://se-chat.fly.dev/register', {username: id});
+            localStorage['chat_id'] = data.user_id;
+        } catch (err) {
+            console.log(err);
+        }
         try {
             axios.post('http://3.37.242.189:8000/auth/login/', {data: {username: id, password: pw}}, {withCredentials:true})
                 .then((res) => {
                     console.log(res);
+                    if ('error' in res.data) {
+                        alert('입력하신 정보를 확인하세요.');
+                        return;
+                    }
                     alert('로그인되었습니다.');
                     localStorage['user_id'] = res.data.userid;
-                    window.location.href = '/main'; 
+                    localStorage['username'] = id;
+                    navigate('/main');
                 })
                 .catch((error) => {
                     console.log(error);
