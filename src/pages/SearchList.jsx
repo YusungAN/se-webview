@@ -11,7 +11,7 @@ const SearchedList = () => {
 
     const LostSearch = async () => {
         try {            
-            const response = await axios.get(`http://3.37.242.189:8000/profile/find_list/${params.findid}`);
+            const response = await axios.get(`http://3.37.242.189:8000/profile/find_list/${params.findid}?user_id=${localStorage['user_id']}`);
             console.log(response.data);
             setSearched(response.data);
             // setSearched([
@@ -63,6 +63,17 @@ const SearchedList = () => {
             alert('실패');
         }
     }
+
+    const endDeal = async (findID, reportID, reward) => {
+        try {
+            console.log(findID, reportID);
+            const {data: data} = await axios.post(`http://3.37.242.189:8000/profile/find_list/${findID}/${reportID}/find/`,
+                                                     {data: {user_id: localStorage['user_id'], reward: localStorage["reward"]}});
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
         <>
             <div style={Wrapper}>
@@ -109,7 +120,7 @@ const SearchedList = () => {
                         </div>
                     </div>
                     <button style={{width: '80vw', backgroundColor: '#F4ADFF', textAlign: 'center', height: '40px', fontWeight: 'bold', marginLeft: '10vw'}} onClick={() => initChat(searched[chosenIdx].username)}>채팅 해보기</button>
-                    <button style={{width: '80vw', backgroundColor: '#F4ADFF', textAlign: 'center', height: '40px', fontWeight: 'bold', marginLeft: '10vw', marginTop: '20px'}}>물건을 받았어요</button>
+                    <button style={{width: '80vw', backgroundColor: '#F4ADFF', textAlign: 'center', height: '40px', fontWeight: 'bold', marginLeft: '10vw', marginTop: '20px'}} onClick={() => endDeal(params.findid, searched[chosenIdx].report_id)}>물건을 받았어요</button>
                 </>
             ): <div style={{margin: '20px'}}>올라온 비슷한 분실물이 없어요</div>}
             </div>

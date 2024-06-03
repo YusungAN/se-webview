@@ -49,7 +49,7 @@ const MyLost = () => {
                 {
                 findList.length > 0 ? 
                 findList.map((data, idx) => (
-                    <Link to={`${data.find_id}`} style={{pointerEvents: data.is_found ? 'none' : 'default'}}>
+                    <Link to={`${data.find_id}`} style={{pointerEvents: data.is_found ? 'none' : 'default'}} onClick={() => localStorage['reward'] = data.reward}>
                         <div key={idx} style={{color: 'black', width: '100%', display: 'flex', alignItems: 'center', height: '130px', borderBottom: '1px solid black', paddingLeft: '30px'}}>
                             <img src={`http://3.37.242.189/${data.photo}`} width={50} height={50} style={{border: '1px solid black'}} />
                             <div>
